@@ -30,7 +30,7 @@ export default function LossTable() {
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 mb-4">
         <Link href="/data"><Button variant="outline">All Id</Button></Link>
-        <Link href="/data/Profit"><Button variant="outline">Profit</Button></Link>
+        <Link href="/data/profit"><Button variant="outline">Profit</Button></Link>
         <Link href="/data/Loss"><Button variant="outline">Loss</Button></Link>
       </div>
 
