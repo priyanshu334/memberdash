@@ -20,7 +20,7 @@ export default function DataTable() {
 
   return (
     <div className="p-4 md:p-6 w-full mx-auto">
-      <h1 className="text-2xl md:text-3xl font-bold text-blue-700 mb-4">Data</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-blue-700 mb-4">Data Table</h1>
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 mb-4">
