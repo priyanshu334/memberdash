@@ -58,7 +58,7 @@ export default function TransferToMember(): React.ReactElement {
     }
 
     try {
-      const res = await fetch(`http://[2a02:4780:41:72ad::1]:5000/api/user/${userId}/transfer-to-member`, {
+      const res = await fetch(`https://backend.nurdcells.com/api/user/${userId}/transfer-to-member`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
