@@ -30,16 +30,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-orange-500 via-orange-500 to-orange-500 text-gray-900 h-full`}
       >
         {/* Navbar only on medium and larger screens */}
-        <div className="hidden md:block">
-          <Navbar />
-        </div>
-
-        <div className="flex  h-screen overflow-y-auto">
-          <Sidebar />
-          <main className="flex-1 p-6 mt-10 md:p-6  lg:p-8 overflow-y-auto">
+        
             {children}
-          </main>
-        </div>
+       
       </body>
     </html>
   );
