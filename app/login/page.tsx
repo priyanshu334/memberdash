@@ -4,41 +4,52 @@ import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useRouter } from "next/navigation"; // or 'next/router' if not using app dir
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/login`, {
+      const res = await fetch('https://backend.nurdcells.com/api/members/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone, password })
       });
 
       const data = await res.json();
+      console.log('Login Response:', data);
 
       if (!res.ok) {
-        setError(data.message || 'Login failed');
+        console.error('Login failed:', data);
+        setError(data.message || 'Invalid phone or password');
         return;
       }
 
-      // Store token (can also use cookies if preferred)
+      // Token handling
       localStorage.setItem('admin_token', data.token);
 
-      // Redirect to admin dashboard
-      router.push('/admin/dashboard');
-    } catch (err) {
-      console.error(err);
-      setError('Something went wrong');
+      // Optionally store remember me flag
+      if (remember) {
+        localStorage.setItem('remember', 'true');
+      }
+
+      // Redirect
+      router.push('/home');
+    } catch (err: any) {
+      console.error('Login Error:', err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,21 +88,32 @@ const LoginPage = () => {
               className="w-full py-2 px-3 focus:outline-none"
               required
             />
+            {/* 👁️ Eye button can be made functional if you want */}
             <Button type="button" variant="ghost" size="icon" className="px-3 text-gray-600">👁️</Button>
           </div>
 
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center cursor-pointer">
-              <Checkbox className="mr-2" checked={remember} onCheckedChange={() => setRemember(!remember)} />
+              <Checkbox
+                className="mr-2"
+                checked={remember}
+                onCheckedChange={() => setRemember(!remember)}
+              />
               Remember me
             </label>
             <a href="#" className="text-orange-700 hover:underline">Forgot Password?</a>
           </div>
 
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-sm text-center">{error}</p>
+          )}
 
-          <Button type="submit" className="w-full bg-orange-700 text-white py-2 rounded-lg font-bold">
-            LOGIN
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-orange-700 text-white py-2 rounded-lg font-bold"
+          >
+            {loading ? 'Logging in...' : 'LOGIN'}
           </Button>
         </form>
 
@@ -99,7 +121,7 @@ const LoginPage = () => {
 
         <div className="flex items-center justify-center border border-gray-300 rounded-lg p-2">
           <span className="text-gray-600 mr-2">📞</span>
-          <span className="text-gray-800">+91-1234589623</span>
+          <span className="text-gray-800">+91-8602966827</span>
         </div>
       </div>
     </div>
@@ -107,4 +129,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-    
